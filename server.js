@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const cassandra = require('cassandra-driver');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const cors = require('cors'); // Import cors package
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
@@ -17,19 +17,15 @@ const io = new Server(server, {
   }
 });
 
-
 app.use(bodyParser.json());
-
-// Enable CORS
 app.use(cors({
   origin: "http://localhost:3000", // Allow your frontend origin
   methods: ["GET", "POST"],
   credentials: true
 }));
 
-// Cassandra setup
-const client = new cassandra.Client({ contactPoints: ['127.0.0.1'], localDataCenter: 'datacenter1' });
 
+const client = new cassandra.Client({ contactPoints: ['127.0.0.1'], localDataCenter: 'datacenter1' });
 client.connect((err) => {
     if (err) console.error(err);
     console.log('Cassandra connected');
